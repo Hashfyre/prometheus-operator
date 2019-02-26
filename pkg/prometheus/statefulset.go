@@ -344,6 +344,12 @@ func makeStatefulSetSpec(p monitoringv1.Prometheus, c *Config, ruleConfigMapName
 			"-storage.tsdb.no-lockfile",
 		)
 
+		if p.Spec.Thanos != nil {
+			promArgs = append(promArgs,
+				fmt.Sprintf("-web.enable-admin-api"),
+			)
+		}
+
 		if p.Spec.Query != nil && p.Spec.Query.LookbackDelta != nil {
 			promArgs = append(promArgs,
 				fmt.Sprintf("-query.lookback-delta=%s", *p.Spec.Query.LookbackDelta),
